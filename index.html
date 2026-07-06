@@ -61,7 +61,6 @@
       color: #0a2e1f;
     }
 
-    /* ===== MAIN CONTAINER ===== */
     #screen-container {
       position: relative;
       width: 90%;
@@ -120,9 +119,17 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: top center;   /* FIX: keep head visible */
+      object-position: top center;   /* keep head visible for most */
       border-radius: 16px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 🆕 Special class for Momota – full body, no cropping */
+    .portrait-contain {
+      object-fit: contain !important;
+      object-position: center center !important;
+      background: rgba(0, 0, 0, 0.15); /* subtle shadow behind image */
+      border-radius: 16px;
     }
 
     .player-info {
@@ -224,11 +231,12 @@
   </nav>
 
   <div id="screen-container">
-    <!-- Screen 1 – Kento Momota -->
+    <!-- Screen 1 – Kento Momota (now uses portrait-contain) -->
     <div id="screen1" class="screen active">
       <div class="player-card">
         <div class="player-photo">
-          <img src="kento-momota.jpg" alt="Kento Momota"/>
+          <!-- 🆕 Added class portrait-contain -->
+          <img src="kento-momota.jpg" alt="Kento Momota" class="portrait-contain"/>
         </div>
         <div class="player-info">
           <h2>Kento Momota</h2>
@@ -411,10 +419,10 @@
         newScreen.classList.add('active');
 
         setTimeout(() => {
-          // --- FIX ghost: disable transition on old screen ---
+          // FIX ghost: disable transition on old screen
           oldScreen.style.transition = 'none';
           oldScreen.classList.remove('exit-left');
-          oldScreen.offsetHeight; // force reflow
+          oldScreen.offsetHeight;
           oldScreen.style.transition = '';
 
           currentIndex = targetIndex;
