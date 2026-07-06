@@ -61,17 +61,16 @@
       color: #0a2e1f;
     }
 
-    /* ===== MAIN CONTAINER – NOW TAKES FULL HEIGHT ===== */
+    /* ===== MAIN CONTAINER ===== */
     #screen-container {
       position: relative;
       width: 90%;
       max-width: 1300px;
-      height: calc(100vh - 100px);   /* fill almost whole screen */
-      margin: 20px 0 30px 0;         /* small top/bottom breathing room */
+      height: calc(100vh - 100px);
+      margin: 20px 0 30px 0;
       overflow: hidden;
     }
 
-    /* Each screen absolute-filled */
     .screen {
       position: absolute;
       top: 0;
@@ -99,7 +98,6 @@
       transform: translateX(-100%);
     }
 
-    /* Player card flex – landscape */
     .player-card {
       display: flex;
       flex-direction: row;
@@ -109,26 +107,24 @@
       height: 100%;
     }
 
-    /* Photo container now fills its half fully */
     .player-photo {
       flex: 0 0 50%;
       max-width: 50%;
-      height: 100%;                  /* stretch full height */
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    /* Image fills the container, no max-height restriction */
     .player-photo img {
       width: 100%;
       height: 100%;
-      object-fit: cover;             /* crop if needed, fills area */
+      object-fit: cover;
+      object-position: top center;   /* FIX: keep head visible */
       border-radius: 16px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     }
 
-    /* Text side */
     .player-info {
       flex: 1;
       display: flex;
@@ -194,10 +190,9 @@
       margin: 2px 0;
     }
 
-    /* Responsive stacking */
     @media (max-width: 700px) {
       #screen-container {
-        height: auto;                /* let it grow with content on mobile */
+        height: auto;
         min-height: 500px;
       }
       .player-card {
@@ -212,7 +207,7 @@
       }
       .player-photo img {
         height: auto;
-        max-height: 300px;           /* still ok on mobile */
+        max-height: 300px;
       }
       .screen {
         padding: 20px;
@@ -221,7 +216,6 @@
   </style>
 </head>
 <body>
-  <!-- NAVIGATION -->
   <nav>
     <button id="nav-player1" class="active-btn">Kento Momota</button>
     <button id="nav-player2">Lin Dan</button>
@@ -411,12 +405,18 @@
         const newScreen = document.getElementById(screenIds[targetIndex]);
 
         isTransitioning = true;
+
         oldScreen.classList.add('exit-left');
         oldScreen.classList.remove('active');
         newScreen.classList.add('active');
 
         setTimeout(() => {
+          // --- FIX ghost: disable transition on old screen ---
+          oldScreen.style.transition = 'none';
           oldScreen.classList.remove('exit-left');
+          oldScreen.offsetHeight; // force reflow
+          oldScreen.style.transition = '';
+
           currentIndex = targetIndex;
           updateNavActive();
           isTransitioning = false;
@@ -433,31 +433,23 @@
         switchToScreen(prevIndex);
       }
 
-      // Scroll to switch
       window.addEventListener('wheel', (e) => {
         e.preventDefault();
         if (scrollCooldown) return;
-
         if (e.deltaY > 0) {
           goNext();
         } else if (e.deltaY < 0) {
           goPrev();
         }
-
         scrollCooldown = true;
-        setTimeout(() => {
-          scrollCooldown = false;
-        }, 600);
+        setTimeout(() => { scrollCooldown = false; }, 600);
       }, { passive: false });
 
-      // Click fallback
       Object.keys(navButtons).forEach((key) => {
         const button = navButtons[key];
         button.addEventListener('click', () => {
           const index = buttonIds.indexOf(key);
-          if (index !== -1) {
-            switchToScreen(index);
-          }
+          if (index !== -1) switchToScreen(index);
         });
       });
 
