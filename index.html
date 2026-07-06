@@ -1,10 +1,370 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My First Website</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Badminton Legends</title>
+  <style>
+    /* ---------- GLOBAL STYLES ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      /* The background image / colour behind the translucent white panels */
+      background: url('https://images.unsplash.com/photo-1613918108466-292b78a8ef95?q=80&w=2070&auto=format&fit=crop')
+        no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    /* ---------- NAVIGATION BAR ---------- */
+    nav {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      padding: 15px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav button {
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: white;
+      font-size: 1rem;
+      padding: 10px 25px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    nav button:hover {
+      background: rgba(255, 255, 255, 0.4);
+      transform: scale(1.05);
+    }
+
+    nav button.active-btn {
+      background: white;
+      color: #0a2e1f;
+    }
+
+    /* ---------- SCREEN CONTAINER (the stage for transitions) ---------- */
+    #screen-container {
+      position: relative;
+      width: 90%;
+      max-width: 1000px;
+      min-height: 500px;
+      margin: 40px 0;
+      overflow: hidden;   /* keeps sliding elements invisible outside */
+    }
+
+    /* ---------- EACH SCREEN ---------- */
+    .screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+
+      /* Translucent white background (the “frosted glass” effect) */
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+
+      /* Start off-screen to the right, no transition by default */
+      transform: translateX(100%);
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+
+    /* The active screen sits in the centre */
+    .screen.active {
+      transform: translateX(0);
+    }
+
+    /* Screen that is sliding out to the left */
+    .screen.exit-left {
+      transform: translateX(-100%);
+    }
+
+    /* ---------- PLAYER CARD LAYOUT (picture left, text right) ---------- */
+    .player-card {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 40px;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Picture container (left side) */
+    .player-photo {
+      flex: 0 0 40%;
+      max-width: 40%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .player-photo img {
+      width: 100%;
+      height: auto;
+      max-height: 450px;
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Text container (right side) */
+    .player-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .player-info h2 {
+      font-size: 2.2rem;
+      color: #0a2e1f;
+      margin-bottom: 5px;
+    }
+
+    .player-info .title {
+      font-size: 1.2rem;
+      color: #555;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .player-info p {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .player-info .stats {
+      list-style: none;
+      margin-top: 10px;
+    }
+
+    .player-info .stats li {
+      background: rgba(10, 46, 31, 0.08);
+      padding: 8px 15px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    /* Simple responsive behaviour: stack vertically on small screens */
+    @media (max-width: 700px) {
+      .player-card {
+        flex-direction: column;
+        text-align: center;
+      }
+      .player-photo {
+        flex: 0 0 auto;
+        max-width: 100%;
+        height: auto;
+      }
+      .player-photo img {
+        max-height: 300px;
+      }
+      .screen {
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>Hello, world!</h1>
-    <p>This is my website hosted on GitHub.</p>
+  <!-- ---------- NAVIGATION (4 buttons for 4 players) ---------- -->
+  <nav>
+    <button id="nav-player1" class="active-btn">Lin Dan</button>
+    <button id="nav-player2">Lee Chong Wei</button>
+    <button id="nav-player3">Tai Tzu‑ying</button>
+    <button id="nav-player4">Viktor Axelsen</button>
+  </nav>
+
+  <!-- ---------- SCREEN CONTAINER ---------- -->
+  <div id="screen-container">
+    <!-- ===== Player 1 Screen ===== -->
+    <div id="screen1" class="screen active">
+      <div class="player-card">
+        <div class="player-photo">
+          <!-- Replace the src with your own image -->
+          <img src="https://placehold.co/400x500?text=Lin+Dan" alt="Lin Dan" />
+        </div>
+        <div class="player-info">
+          <h2>Lin Dan</h2>
+          <div class="title">“Super Dan” • China</div>
+          <p>
+            Two-time Olympic champion and five-time World champion. Known for
+            his explosive speed, pinpoint accuracy, and unmatched mental
+            toughness.
+          </p>
+          <ul class="stats">
+            <li>🏸 Olympic Gold: 2008, 2012</li>
+            <li>🏸 World Championships: 5 titles</li>
+            <li>🏸 All England: 6 titles</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Player 2 Screen ===== -->
+    <div id="screen2" class="screen">
+      <div class="player-card">
+        <div class="player-photo">
+          <img src="https://placehold.co/400x500?text=Lee+Chong+Wei" alt="Lee Chong Wei" />
+        </div>
+        <div class="player-info">
+          <h2>Lee Chong Wei</h2>
+          <div class="title">“The Warrior” • Malaysia</div>
+          <p>
+            A legend of the game, holding the world No. 1 ranking for 349
+            weeks. Admired for his lightning smashes and never‑say‑die
+            attitude.
+          </p>
+          <ul class="stats">
+            <li>🏸 Olympic Silver: 2008, 2012, 2016</li>
+            <li>🏸 World Championships: 3 silver, 1 bronze</li>
+            <li>🏸 All England: 4 titles</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Player 3 Screen ===== -->
+    <div id="screen3" class="screen">
+      <div class="player-card">
+        <div class="player-photo">
+          <img src="https://placehold.co/400x500?text=Tai+Tzu-ying" alt="Tai Tzu-ying" />
+        </div>
+        <div class="player-info">
+          <h2>Tai Tzu‑ying</h2>
+          <div class="title">“The Magician” • Chinese Taipei</div>
+          <p>
+            Renowned for her deceptive shots and incredible racket skills. She
+            held the world No. 1 spot for a record 214 weeks.
+          </p>
+          <ul class="stats">
+            <li>🏸 Olympic Silver: 2020</li>
+            <li>🏸 World Championships: 1 silver, 2 bronze</li>
+            <li>🏸 Asian Games: 1 gold</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Player 4 Screen ===== -->
+    <div id="screen4" class="screen">
+      <div class="player-card">
+        <div class="player-photo">
+          <img src="https://placehold.co/400x500?text=Viktor+Axelsen" alt="Viktor Axelsen" />
+        </div>
+        <div class="player-info">
+          <h2>Viktor Axelsen</h2>
+          <div class="title">“The Great Dane” • Denmark</div>
+          <p>
+            Olympic and World champion known for his towering height and
+            relentless attacking game. Currently one of the most dominant
+            players on tour.
+          </p>
+          <ul class="stats">
+            <li>🏸 Olympic Gold: 2020</li>
+            <li>🏸 World Championships: 2 titles</li>
+            <li>🏸 All England: 2 titles</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- JAVASCRIPT: SCREEN SWITCHING WITH LEFT SLIDE ----------
+    (function () {
+      // Grab all screen elements and navigation buttons
+      const screens = document.querySelectorAll('.screen');
+      const navButtons = {
+        player1: document.getElementById('nav-player1'),
+        player2: document.getElementById('nav-player2'),
+        player3: document.getElementById('nav-player3'),
+        player4: document.getElementById('nav-player4'),
+      };
+
+      // Map each button to the id of the screen it should show
+      const buttonToScreen = {
+        player1: 'screen1',
+        player2: 'screen2',
+        player3: 'screen3',
+        player4: 'screen4',
+      };
+
+      let currentScreen = document.querySelector('.screen.active');
+      let isTransitioning = false; // prevent spamming during animation
+
+      function switchScreen(targetScreenId) {
+        // Prevent double clicks during the slide animation
+        if (isTransitioning) return;
+
+        const targetScreen = document.getElementById(targetScreenId);
+        if (!targetScreen || targetScreen === currentScreen) return;
+
+        isTransitioning = true;
+
+        // 1. Make current screen slide out to the left
+        currentScreen.classList.add('exit-left');
+        // 2. Remove 'active' from current (so it starts from wherever it is)
+        currentScreen.classList.remove('active');
+
+        // 3. Prepare target screen: it sits at translateX(100%) (off-right),
+        //    then we add 'active' so it slides to translateX(0)
+        targetScreen.classList.add('active');
+
+        // After the transition (0.5s), clean up classes
+        setTimeout(() => {
+          // Remove exit-left from the old screen, so it goes back to translateX(100%) hidden
+          currentScreen.classList.remove('exit-left');
+          // Update the current screen reference
+          currentScreen = targetScreen;
+          isTransitioning = false;
+        }, 500); // must match CSS transition duration
+      }
+
+      // Attach click listeners to navigation buttons
+      Object.keys(navButtons).forEach((key) => {
+        const button = navButtons[key];
+        button.addEventListener('click', () => {
+          const targetId = buttonToScreen[key];
+          switchScreen(targetId);
+
+          // Update active button styling
+          document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active-btn'));
+          button.classList.add('active-btn');
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
