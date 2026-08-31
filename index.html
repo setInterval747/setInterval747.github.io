@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Badminton Legends</title>
+  <title>The History of Badminton</title>
   <style>
-    /* ---------- GLOBAL STYLES ---------- */
+    /* ==========================================
+       GLOBAL STYLES
+    ========================================== */
     * {
       margin: 0;
       padding: 0;
@@ -13,20 +15,232 @@
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      /* The background image / colour behind the translucent white panels */
-      background: url('https://images.unsplash.com/photo-1613918108466-292b78a8ef95?q=80&w=2070&auto=format&fit=crop')
-        no-repeat center center fixed;
-      background-size: cover;
+      font-family: 'Arial Black', 'Segoe UI', sans-serif;
+      background: #ffffff;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
+      overflow-x: hidden;
+      position: relative;
     }
 
-    /* ---------- NAVIGATION BAR ---------- */
-    nav {
+    /* Red corner squares for decoration */
+    body::before,
+    body::after {
+      content: '';
+      position: fixed;
+      width: 150px;
+      height: 150px;
+      background: #cc0000;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    body::before {
+      top: 0;
+      left: 0;
+    }
+
+    body::after {
+      bottom: 0;
+      right: 0;
+    }
+
+    .corner-decoration {
+      position: fixed;
+      width: 150px;
+      height: 150px;
+      background: #cc0000;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .corner-top-right {
+      top: 0;
+      right: 0;
+    }
+
+    .corner-bottom-left {
+      bottom: 0;
+      left: 0;
+    }
+
+    /* ==========================================
+       MAIN SCREEN CONTAINER
+    ========================================== */
+    #screen-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      transform: translateX(100%);
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 80px;
+    }
+
+    .screen.active {
+      transform: translateX(0);
+    }
+
+    .screen.exit-left {
+      transform: translateX(-100%);
+    }
+
+    /* ==========================================
+       HOME SCREEN
+    ========================================== */
+    #screen-home {
+      flex-direction: row;
+      gap: 60px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .home-title {
+      flex: 1;
+      max-width: 45%;
+    }
+
+    .home-title h1 {
+      font-size: 4rem;
+      line-height: 1.2;
+      color: #1a1a1a;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 900;
+      word-wrap: break-word;
+    }
+
+    .home-title h1 span {
+      color: #cc0000;
+    }
+
+    .nav-buttons {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      align-items: flex-end;
+      max-width: 45%;
+    }
+
+    /* Shuttlecock-shaped buttons */
+    .shuttle-btn {
+      position: relative;
+      width: 100%;
+      max-width: 350px;
+      height: 70px;
+      background: #cc0000;
+      border: none;
+      cursor: pointer;
+      color: white;
+      font-size: 1.3rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-family: 'Arial Black', 'Segoe UI', sans-serif;
+      transition: all 0.3s ease;
+      padding: 0 20px;
+      text-align: left;
+      clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 80% 100%, 20% 100%, 0% 70%);
+    }
+
+    .shuttle-btn::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      width: 40px;
+      height: 35px;
+      background: 
+        linear-gradient(45deg, transparent 45%, white 45%, white 55%, transparent 55%),
+        linear-gradient(-45deg, transparent 45%, white 45%, white 55%, transparent 55%),
+        linear-gradient(90deg, transparent 45%, white 45%, white 55%, transparent 55%);
+      background-size: 12px 12px, 12px 12px, 12px 12px;
+      background-repeat: no-repeat;
+      opacity: 0.8;
+    }
+
+    .shuttle-btn:hover {
+      background: #a00000;
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(204, 0, 0, 0.4);
+    }
+
+    .shuttle-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* ==========================================
+       BACK BUTTON
+    ========================================== */
+    .back-btn {
+      position: absolute;
+      top: 40px;
+      left: 40px;
+      background: #cc0000;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-family: 'Arial Black', 'Segoe UI', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background 0.3s ease;
+      z-index: 10;
+    }
+
+    .back-btn:hover {
+      background: #a00000;
+    }
+
+    /* ==========================================
+       PLACEHOLDER SCREENS
+    ========================================== */
+    .placeholder-content {
+      text-align: center;
+      max-width: 800px;
+    }
+
+    .placeholder-content h2 {
+      font-size: 2.5rem;
+      color: #1a1a1a;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .placeholder-content p {
+      font-size: 1.2rem;
+      color: #666;
+      line-height: 1.6;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* ==========================================
+       LEGENDARY PLAYERS SECTION
+    ========================================== */
+    #screen-players {
+      padding: 0;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+    }
+
+    .players-nav {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       background: rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(10px);
@@ -34,12 +248,11 @@
       justify-content: center;
       gap: 15px;
       padding: 15px 0;
-      position: sticky;
-      top: 0;
       z-index: 100;
+      flex-wrap: wrap;
     }
 
-    nav button {
+    .players-nav button {
       background: rgba(255, 255, 255, 0.2);
       border: 1px solid rgba(255, 255, 255, 0.4);
       color: white;
@@ -50,64 +263,51 @@
       transition: background 0.3s ease, transform 0.2s ease;
       font-weight: 600;
       letter-spacing: 0.5px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    nav button:hover {
+    .players-nav button:hover {
       background: rgba(255, 255, 255, 0.4);
       transform: scale(1.05);
     }
 
-    nav button.active-btn {
+    .players-nav button.active-btn {
       background: white;
       color: #0a2e1f;
     }
 
-    /* ---------- SCREEN CONTAINER (the stage for transitions) ---------- */
-    #screen-container {
-      position: relative;
-      width: 90%;
-      max-width: 1000px;
-      min-height: 500px;
-      margin: 40px 0;
-      overflow: hidden;   /* keeps sliding elements invisible outside */
+    #players-screen-container {
+      position: absolute;
+      top: 70px;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 70px);
+      overflow: hidden;
     }
 
-    /* ---------- EACH SCREEN ---------- */
-    .screen {
+    .player-screen {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-
-      /* Translucent white background (the “frosted glass” effect) */
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(8px);
-      border-radius: 20px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-      padding: 40px;
-
-      /* Start off-screen to the right, no transition by default */
+      padding: 30px 60px;
       transform: translateX(100%);
       transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-
       display: flex;
       align-items: center;
       justify-content: center;
       box-sizing: border-box;
     }
 
-    /* The active screen sits in the centre */
-    .screen.active {
+    .player-screen.active {
       transform: translateX(0);
     }
 
-    /* Screen that is sliding out to the left */
-    .screen.exit-left {
+    .player-screen.exit-left {
       transform: translateX(-100%);
     }
 
-    /* ---------- PLAYER CARD LAYOUT (picture left, text right) ---------- */
     .player-card {
       display: flex;
       flex-direction: row;
@@ -117,11 +317,10 @@
       height: 100%;
     }
 
-    /* Picture container (left side) */
     .player-photo {
-      flex: 0 0 40%;
-      max-width: 40%;
-      height: 100%;
+      flex: 0 0 45%;
+      max-width: 45%;
+      height: 90%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -129,59 +328,136 @@
 
     .player-photo img {
       width: 100%;
-      height: auto;
-      max-height: 450px;
+      height: 100%;
       object-fit: cover;
+      object-position: top center;
       border-radius: 16px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     }
 
-    /* Text container (right side) */
+    .portrait-contain {
+      object-fit: contain !important;
+      object-position: center center !important;
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 16px;
+    }
+
     .player-info {
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 15px;
+      gap: 10px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     .player-info h2 {
-      font-size: 2.2rem;
+      font-size: 2rem;
       color: #0a2e1f;
       margin-bottom: 5px;
+      font-family: 'Arial Black', 'Segoe UI', sans-serif;
     }
 
     .player-info .title {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       color: #555;
       font-weight: 500;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .player-info p {
-      font-size: 1rem;
-      line-height: 1.6;
+      font-size: 0.95rem;
+      line-height: 1.5;
       color: #333;
     }
 
     .player-info .stats {
       list-style: none;
-      margin-top: 10px;
+      margin-top: 5px;
     }
 
     .player-info .stats li {
       background: rgba(10, 46, 31, 0.08);
-      padding: 8px 15px;
+      padding: 7px 15px;
       border-radius: 8px;
-      margin-bottom: 8px;
+      margin-bottom: 5px;
       font-weight: 500;
+      font-size: 0.9rem;
     }
 
-    /* Simple responsive behaviour: stack vertically on small screens */
-    @media (max-width: 700px) {
+    .player-info .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 8px;
+    }
+
+    .player-info .meta .column {
+      flex: 1 1 160px;
+    }
+
+    .player-info .meta h4 {
+      font-size: 0.9rem;
+      color: #0a2e1f;
+      margin-bottom: 4px;
+      border-bottom: 2px solid rgba(10, 46, 31, 0.2);
+      padding-bottom: 2px;
+    }
+
+    .player-info .meta p {
+      font-size: 0.85rem;
+      color: #444;
+      margin: 2px 0;
+    }
+
+    /* ==========================================
+       RESPONSIVE
+    ========================================== */
+    @media (max-width: 1024px) {
+      .home-title h1 {
+        font-size: 3rem;
+      }
+      .shuttle-btn {
+        max-width: 280px;
+        font-size: 1.1rem;
+      }
+      .screen {
+        padding: 40px;
+      }
+      .player-screen {
+        padding: 20px 30px;
+      }
+      .player-photo {
+        flex: 0 0 40%;
+        max-width: 40%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      #screen-home {
+        flex-direction: column;
+        gap: 40px;
+      }
+      .home-title {
+        max-width: 100%;
+        text-align: center;
+      }
+      .home-title h1 {
+        font-size: 2.5rem;
+      }
+      .nav-buttons {
+        max-width: 100%;
+        align-items: center;
+      }
+      .shuttle-btn {
+        max-width: 300px;
+      }
+      .player-screen {
+        padding: 20px;
+      }
       .player-card {
         flex-direction: column;
-        text-align: center;
+        gap: 20px;
       }
       .player-photo {
         flex: 0 0 auto;
@@ -189,143 +465,236 @@
         height: auto;
       }
       .player-photo img {
+        height: auto;
         max-height: 300px;
-      }
-      .screen {
-        padding: 20px;
       }
     }
   </style>
 </head>
 <body>
-  <!-- ---------- NAVIGATION (4 buttons for 4 players) ---------- -->
-  <nav>
-    <button id="nav-player1" class="active-btn">Lin Dan</button>
-    <button id="nav-player2">Lee Chong Wei</button>
-    <button id="nav-player3">Tai Tzu‑ying</button>
-    <button id="nav-player4">Viktor Axelsen</button>
-  </nav>
+  <!-- Decorative red corner squares -->
+  <div class="corner-decoration corner-top-right"></div>
+  <div class="corner-decoration corner-bottom-left"></div>
 
-  <!-- ---------- SCREEN CONTAINER ---------- -->
+  <!-- ==========================================
+       MAIN SCREEN CONTAINER
+  ========================================== -->
   <div id="screen-container">
-    <!-- ===== Player 1 Screen ===== -->
-    <div id="screen1" class="screen active">
-      <div class="player-card">
-        <div class="player-photo">
-          <!-- Replace the src with your own image -->
-          <img src="https://placehold.co/400x500?text=Lin+Dan" alt="Lin Dan" />
-        </div>
-        <div class="player-info">
-          <h2>Lin Dan</h2>
-          <div class="title">“Super Dan” • China</div>
-          <p>
-            Two-time Olympic champion and five-time World champion. Known for
-            his explosive speed, pinpoint accuracy, and unmatched mental
-            toughness.
-          </p>
-          <ul class="stats">
-            <li>🏸 Olympic Gold: 2008, 2012</li>
-            <li>🏸 World Championships: 5 titles</li>
-            <li>🏸 All England: 6 titles</li>
-          </ul>
-        </div>
+    
+    <!-- ===== HOME SCREEN ===== -->
+    <div id="screen-home" class="screen active">
+      <div class="home-title">
+        <h1>The History of <span>Badminton</span></h1>
+      </div>
+      <div class="nav-buttons">
+        <button class="shuttle-btn" data-target="screen-origins">Origins & Evolution</button>
+        <button class="shuttle-btn" data-target="screen-players">Legendary Players</button>
+        <button class="shuttle-btn" data-target="screen-equipment">Equipment Evolution</button>
+        <button class="shuttle-btn" data-target="screen-about">About & Sources</button>
       </div>
     </div>
 
-    <!-- ===== Player 2 Screen ===== -->
-    <div id="screen2" class="screen">
-      <div class="player-card">
-        <div class="player-photo">
-          <img src="https://placehold.co/400x500?text=Lee+Chong+Wei" alt="Lee Chong Wei" />
-        </div>
-        <div class="player-info">
-          <h2>Lee Chong Wei</h2>
-          <div class="title">“The Warrior” • Malaysia</div>
-          <p>
-            A legend of the game, holding the world No. 1 ranking for 349
-            weeks. Admired for his lightning smashes and never‑say‑die
-            attitude.
-          </p>
-          <ul class="stats">
-            <li>🏸 Olympic Silver: 2008, 2012, 2016</li>
-            <li>🏸 World Championships: 3 silver, 1 bronze</li>
-            <li>🏸 All England: 4 titles</li>
-          </ul>
-        </div>
+    <!-- ===== ORIGINS & EVOLUTION (placeholder) ===== -->
+    <div id="screen-origins" class="screen">
+      <button class="back-btn" data-target="screen-home">← Back</button>
+      <div class="placeholder-content">
+        <h2>Origins & Evolution</h2>
+        <p>Content coming soon. This section will cover the history and foundation of badminton, as well as the growth and evolution of the sport over time.</p>
       </div>
     </div>
 
-    <!-- ===== Player 3 Screen ===== -->
-    <div id="screen3" class="screen">
-      <div class="player-card">
-        <div class="player-photo">
-          <img src="https://placehold.co/400x500?text=Tai+Tzu-ying" alt="Tai Tzu-ying" />
+    <!-- ===== LEGENDARY PLAYERS ===== -->
+    <div id="screen-players" class="screen">
+      <button class="back-btn" data-target="screen-home">← Back</button>
+      
+      <!-- Players sub-navigation -->
+      <div class="players-nav">
+        <button id="nav-player1" class="active-btn">Kento Momota</button>
+        <button id="nav-player2">Lin Dan</button>
+        <button id="nav-player3">Lee Chong Wei</button>
+        <button id="nav-player4">Shi Yu Qi</button>
+      </div>
+
+      <!-- Players screens container -->
+      <div id="players-screen-container">
+        
+        <!-- Player 1 – Kento Momota -->
+        <div id="player-screen1" class="player-screen active">
+          <div class="player-card">
+            <div class="player-photo">
+              <img src="kento-momota.jpg" alt="Kento Momota" class="portrait-contain"/>
+            </div>
+            <div class="player-info">
+              <h2>Kento Momota</h2>
+              <div class="title">"The Comeback King" • Japan</div>
+              <p>
+                A player defined by extraordinary resilience. In 2020, Momota survived a
+                near-fatal car accident that left him with serious facial injuries. Despite
+                the physical and psychological scars, he returned to professional
+                competition with unbroken determination. On court, his impenetrable defence
+                and delicate net play make him a complete player. His calm demeanour hides
+                a fierce competitive spirit – a testament to his strong mentality.
+              </p>
+              <ul class="stats">
+                <li>🏸 World Champion: 2018, 2019</li>
+                <li>🏸 Record 11 BWF titles in a single season (2019)</li>
+                <li>🏸 Asian Champion: 2018, 2019</li>
+              </ul>
+              <div class="meta">
+                <div class="column">
+                  <h4>Personal</h4>
+                  <p>Born: 1 September 1994</p>
+                  <p>Kagawa, Japan</p>
+                </div>
+                <div class="column">
+                  <h4>Gear</h4>
+                  <p>Racket: Yonex Astrox 99 Pro</p>
+                  <p>Shoes: Yonex Power Cushion 65 Z3</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="player-info">
-          <h2>Tai Tzu‑ying</h2>
-          <div class="title">“The Magician” • Chinese Taipei</div>
-          <p>
-            Renowned for her deceptive shots and incredible racket skills. She
-            held the world No. 1 spot for a record 214 weeks.
-          </p>
-          <ul class="stats">
-            <li>🏸 Olympic Silver: 2020</li>
-            <li>🏸 World Championships: 1 silver, 2 bronze</li>
-            <li>🏸 Asian Games: 1 gold</li>
-          </ul>
+
+        <!-- Player 2 – Lin Dan -->
+        <div id="player-screen2" class="player-screen">
+          <div class="player-card">
+            <div class="player-photo">
+              <img src="lin-dan.jpg" alt="Lin Dan" />
+            </div>
+            <div class="player-info">
+              <h2>Lin Dan</h2>
+              <div class="title">"Super Dan" • China</div>
+              <p>
+                Two-time Olympic champion and five-time World champion. Known for
+                his explosive speed, accurate shot quality and strong mentality
+                especially at key points.
+              </p>
+              <ul class="stats">
+                <li>🏸 Olympic Gold: 2008, 2012</li>
+                <li>🏸 World Championships: 5 titles</li>
+                <li>🏸 All England: 6 titles</li>
+              </ul>
+              <div class="meta">
+                <div class="column">
+                  <h4>Personal</h4>
+                  <p>Born: 14 October 1983</p>
+                  <p>Longyan, Fujian, China</p>
+                </div>
+                <div class="column">
+                  <h4>Gear</h4>
+                  <p>Racket: Yonex Voltric LD Force / Astrox 100 ZZ</p>
+                  <p>Shoes: Yonex SHB-65Z</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <!-- Player 3 – Lee Chong Wei -->
+        <div id="player-screen3" class="player-screen">
+          <div class="player-card">
+            <div class="player-photo">
+              <img src="lee-chong-wei.jpg" alt="Lee Chong Wei" />
+            </div>
+            <div class="player-info">
+              <h2>Lee Chong Wei</h2>
+              <div class="title">"The Warrior" • Malaysia</div>
+              <p>
+                Admired for his strong offensive playstyle. He held the world No. 1
+                ranking for 349 weeks and is regarded as one of the greatest players
+                never to win an Olympic or World title.
+              </p>
+              <ul class="stats">
+                <li>🏸 Olympic Silver: 2008, 2012, 2016</li>
+                <li>🏸 World Championships: 3 silver, 1 bronze</li>
+                <li>🏸 All England: 4 titles</li>
+              </ul>
+              <div class="meta">
+                <div class="column">
+                  <h4>Personal</h4>
+                  <p>Born: 21 October 1982</p>
+                  <p>Bagan Serai, Perak, Malaysia</p>
+                </div>
+                <div class="column">
+                  <h4>Gear</h4>
+                  <p>Racket: Yonex Voltric Z-Force II</p>
+                  <p>Shoes: Yonex Power Cushion 65 Z</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Player 4 – Shi Yu Qi -->
+        <div id="player-screen4" class="player-screen">
+          <div class="player-card">
+            <div class="player-photo">
+              <img src="shi-yu-qi.jpg" alt="Shi Yu Qi" />
+            </div>
+            <div class="player-info">
+              <h2>Shi Yu Qi</h2>
+              <div class="title">"The New Era" • China</div>
+              <p>
+                Often described as the beginning of a new badminton era, Shi Yu Qi
+                combines speed, power and tactical intelligence. The young Chinese
+                star has already claimed major titles and is seen as the future
+                of men's singles.
+              </p>
+              <ul class="stats">
+                <li>🏸 Asian Games Gold: 2022 (held 2023)</li>
+                <li>🏸 World Tour Finals Champion: 2023</li>
+                <li>🏸 World No. 1 (career high)</li>
+              </ul>
+              <div class="meta">
+                <div class="column">
+                  <h4>Personal</h4>
+                  <p>Born: 28 February 1996</p>
+                  <p>Nantong, Jiangsu, China</p>
+                </div>
+                <div class="column">
+                  <h4>Gear</h4>
+                  <p>Racket: Yonex Astrox 100 ZZ</p>
+                  <p>Shoes: Yonex Power Cushion 65 Z3</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <!-- ===== Player 4 Screen ===== -->
-    <div id="screen4" class="screen">
-      <div class="player-card">
-        <div class="player-photo">
-          <img src="https://placehold.co/400x500?text=Viktor+Axelsen" alt="Viktor Axelsen" />
-        </div>
-        <div class="player-info">
-          <h2>Viktor Axelsen</h2>
-          <div class="title">“The Great Dane” • Denmark</div>
-          <p>
-            Olympic and World champion known for his towering height and
-            relentless attacking game. Currently one of the most dominant
-            players on tour.
-          </p>
-          <ul class="stats">
-            <li>🏸 Olympic Gold: 2020</li>
-            <li>🏸 World Championships: 2 titles</li>
-            <li>🏸 All England: 2 titles</li>
-          </ul>
-        </div>
+    <!-- ===== EQUIPMENT EVOLUTION (placeholder) ===== -->
+    <div id="screen-equipment" class="screen">
+      <button class="back-btn" data-target="screen-home">← Back</button>
+      <div class="placeholder-content">
+        <h2>Equipment Evolution</h2>
+        <p>Content coming soon. This section will feature iconic rackets and shoes from different eras, along with changes in materials and technology.</p>
       </div>
     </div>
+
+    <!-- ===== ABOUT & SOURCES (placeholder) ===== -->
+    <div id="screen-about" class="screen">
+      <button class="back-btn" data-target="screen-home">← Back</button>
+      <div class="placeholder-content">
+        <h2>About & Sources</h2>
+        <p>Content coming soon. This section will explain the purpose of the site and list the sources used for research.</p>
+      </div>
+    </div>
+
   </div>
 
   <script>
-    // ---------- JAVASCRIPT: SCREEN SWITCHING WITH LEFT SLIDE ----------
+    // ==========================================
+    // MAIN SITE NAVIGATION (Home ↔ Sections)
+    // ==========================================
     (function () {
-      // Grab all screen elements and navigation buttons
-      const screens = document.querySelectorAll('.screen');
-      const navButtons = {
-        player1: document.getElementById('nav-player1'),
-        player2: document.getElementById('nav-player2'),
-        player3: document.getElementById('nav-player3'),
-        player4: document.getElementById('nav-player4'),
-      };
-
-      // Map each button to the id of the screen it should show
-      const buttonToScreen = {
-        player1: 'screen1',
-        player2: 'screen2',
-        player3: 'screen3',
-        player4: 'screen4',
-      };
-
-      let currentScreen = document.querySelector('.screen.active');
-      let isTransitioning = false; // prevent spamming during animation
+      const screens = document.querySelectorAll('#screen-container > .screen');
+      let currentScreen = document.querySelector('#screen-container > .screen.active');
+      let isTransitioning = false;
 
       function switchScreen(targetScreenId) {
-        // Prevent double clicks during the slide animation
         if (isTransitioning) return;
 
         const targetScreen = document.getElementById(targetScreenId);
@@ -333,37 +702,129 @@
 
         isTransitioning = true;
 
-        // 1. Make current screen slide out to the left
         currentScreen.classList.add('exit-left');
-        // 2. Remove 'active' from current (so it starts from wherever it is)
         currentScreen.classList.remove('active');
 
-        // 3. Prepare target screen: it sits at translateX(100%) (off-right),
-        //    then we add 'active' so it slides to translateX(0)
         targetScreen.classList.add('active');
 
-        // After the transition (0.5s), clean up classes
         setTimeout(() => {
-          // Remove exit-left from the old screen, so it goes back to translateX(100%) hidden
           currentScreen.classList.remove('exit-left');
-          // Update the current screen reference
           currentScreen = targetScreen;
           isTransitioning = false;
-        }, 500); // must match CSS transition duration
+        }, 600);
       }
 
-      // Attach click listeners to navigation buttons
+      document.querySelectorAll('[data-target]').forEach((element) => {
+        element.addEventListener('click', () => {
+          const targetId = element.getAttribute('data-target');
+          switchScreen(targetId);
+        });
+      });
+    })();
+
+    // ==========================================
+    // PLAYERS SUB-NAVIGATION (within Legendary Players)
+    // ==========================================
+    (function () {
+      const playerScreens = document.querySelectorAll('.player-screen');
+      const navButtons = {
+        player1: document.getElementById('nav-player1'),
+        player2: document.getElementById('nav-player2'),
+        player3: document.getElementById('nav-player3'),
+        player4: document.getElementById('nav-player4'),
+      };
+
+      const screenIds = ['player-screen1', 'player-screen2', 'player-screen3', 'player-screen4'];
+      const buttonIds = ['player1', 'player2', 'player3', 'player4'];
+
+      let currentIndex = 0;
+      let isTransitioning = false;
+      let scrollCooldown = false;
+
+      function getCurrentPlayerScreen() {
+        return document.getElementById(screenIds[currentIndex]);
+      }
+
+      function updateNavActive() {
+        document.querySelectorAll('.players-nav button').forEach(btn => btn.classList.remove('active-btn'));
+        const activeButtonId = buttonIds[currentIndex];
+        document.getElementById(`nav-${activeButtonId}`).classList.add('active-btn');
+      }
+
+      function switchToPlayer(targetIndex) {
+        if (isTransitioning) return;
+        if (targetIndex === currentIndex) return;
+        if (targetIndex < 0 || targetIndex >= playerScreens.length) return;
+
+        const oldScreen = getCurrentPlayerScreen();
+        const newScreen = document.getElementById(screenIds[targetIndex]);
+
+        isTransitioning = true;
+
+        oldScreen.classList.add('exit-left');
+        oldScreen.classList.remove('active');
+        newScreen.classList.add('active');
+
+        setTimeout(() => {
+          oldScreen.style.transition = 'none';
+          oldScreen.classList.remove('exit-left');
+          oldScreen.offsetHeight;
+          oldScreen.style.transition = '';
+
+          currentIndex = targetIndex;
+          updateNavActive();
+          isTransitioning = false;
+        }, 500);
+      }
+
+      function goNext() {
+        const nextIndex = (currentIndex + 1) % playerScreens.length;
+        switchToPlayer(nextIndex);
+      }
+
+      function goPrev() {
+        const prevIndex = (currentIndex - 1 + playerScreens.length) % playerScreens.length;
+        switchToPlayer(prevIndex);
+      }
+
+      // Only activate scroll when the players section is visible
+      const playersSection = document.getElementById('screen-players');
+      const observer = new MutationObserver(() => {
+        if (playersSection.classList.contains('active')) {
+          window.addEventListener('wheel', handleWheel, { passive: false });
+        } else {
+          window.removeEventListener('wheel', handleWheel);
+        }
+      });
+
+      function handleWheel(e) {
+        e.preventDefault();
+        if (scrollCooldown) return;
+        if (e.deltaY > 0) {
+          goNext();
+        } else if (e.deltaY < 0) {
+          goPrev();
+        }
+        scrollCooldown = true;
+        setTimeout(() => { scrollCooldown = false; }, 600);
+      }
+
+      observer.observe(playersSection, { attributes: true, attributeFilter: ['class'] });
+
+      // Initial check
+      if (playersSection.classList.contains('active')) {
+        window.addEventListener('wheel', handleWheel, { passive: false });
+      }
+
       Object.keys(navButtons).forEach((key) => {
         const button = navButtons[key];
         button.addEventListener('click', () => {
-          const targetId = buttonToScreen[key];
-          switchScreen(targetId);
-
-          // Update active button styling
-          document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active-btn'));
-          button.classList.add('active-btn');
+          const index = buttonIds.indexOf(key);
+          if (index !== -1) switchToPlayer(index);
         });
       });
+
+      updateNavActive();
     })();
   </script>
 </body>
