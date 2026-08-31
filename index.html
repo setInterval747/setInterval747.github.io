@@ -87,14 +87,17 @@
       align-items: center;
       justify-content: center;
       padding: 60px 80px;
+      visibility: hidden;
     }
 
     .screen.active {
       transform: translateX(0);
+      visibility: visible;
     }
 
     .screen.exit-left {
       transform: translateX(-100%);
+      visibility: visible;
     }
 
     /* ==========================================
@@ -102,14 +105,15 @@
     ========================================== */
     #screen-home {
       flex-direction: row;
-      gap: 60px;
-      justify-content: space-between;
+      gap: 40px;
+      justify-content: center;
       align-items: center;
     }
 
     .home-title {
-      flex: 1;
-      max-width: 45%;
+      flex: 0 1 auto;
+      max-width: 42%;
+      margin-right: 20px;
     }
 
     .home-title h1 {
@@ -127,54 +131,39 @@
     }
 
     .nav-buttons {
-      flex: 1;
+      flex: 0 1 auto;
       display: flex;
       flex-direction: column;
-      gap: 25px;
-      align-items: flex-end;
+      gap: 28px;
+      align-items: flex-start;
       max-width: 45%;
     }
 
-    /* Shuttlecock-shaped buttons */
+    /* Simple rectangular buttons (replacing shuttle shape) */
     .shuttle-btn {
       position: relative;
-      width: 100%;
-      max-width: 350px;
-      height: 70px;
+      width: 110%;
+      max-width: 420px;
+      height: 84px;
       background: #cc0000;
       border: none;
       cursor: pointer;
       color: white;
-      font-size: 1.3rem;
+      font-size: 1.5rem;
       font-weight: bold;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       font-family: 'Arial Black', 'Segoe UI', sans-serif;
       transition: all 0.3s ease;
-      padding: 0 20px;
+      padding: 0 30px;
       text-align: left;
-      clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 80% 100%, 20% 100%, 0% 70%);
-    }
-
-    .shuttle-btn::before {
-      content: '';
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      width: 40px;
-      height: 35px;
-      background: 
-        linear-gradient(45deg, transparent 45%, white 45%, white 55%, transparent 55%),
-        linear-gradient(-45deg, transparent 45%, white 45%, white 55%, transparent 55%),
-        linear-gradient(90deg, transparent 45%, white 45%, white 55%, transparent 55%);
-      background-size: 12px 12px, 12px 12px, 12px 12px;
-      background-repeat: no-repeat;
-      opacity: 0.8;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(204, 0, 0, 0.3);
     }
 
     .shuttle-btn:hover {
       background: #a00000;
-      transform: scale(1.05);
+      transform: scale(1.03);
       box-shadow: 0 8px 20px rgba(204, 0, 0, 0.4);
     }
 
@@ -199,7 +188,9 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       transition: background 0.3s ease;
-      z-index: 10;
+      z-index: 200;
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
 
     .back-btn:hover {
@@ -242,23 +233,22 @@
       top: 0;
       left: 0;
       width: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(10px);
+      background: #cc0000;
       display: flex;
       justify-content: center;
       gap: 15px;
-      padding: 15px 0;
+      padding: 15px 20px 15px 120px;
       z-index: 100;
       flex-wrap: wrap;
     }
 
     .players-nav button {
       background: rgba(255, 255, 255, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.4);
+      border: 2px solid rgba(255, 255, 255, 0.5);
       color: white;
       font-size: 1rem;
       padding: 10px 25px;
-      border-radius: 30px;
+      border-radius: 8px;
       cursor: pointer;
       transition: background 0.3s ease, transform 0.2s ease;
       font-weight: 600;
@@ -267,13 +257,14 @@
     }
 
     .players-nav button:hover {
-      background: rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.35);
       transform: scale(1.05);
     }
 
     .players-nav button.active-btn {
       background: white;
-      color: #0a2e1f;
+      color: #cc0000;
+      border-color: white;
     }
 
     #players-screen-container {
@@ -298,14 +289,17 @@
       align-items: center;
       justify-content: center;
       box-sizing: border-box;
+      visibility: hidden;
     }
 
     .player-screen.active {
       transform: translateX(0);
+      visibility: visible;
     }
 
     .player-screen.exit-left {
       transform: translateX(-100%);
+      visibility: visible;
     }
 
     .player-card {
@@ -418,8 +412,9 @@
         font-size: 3rem;
       }
       .shuttle-btn {
-        max-width: 280px;
-        font-size: 1.1rem;
+        max-width: 340px;
+        font-size: 1.2rem;
+        height: 70px;
       }
       .screen {
         padding: 40px;
@@ -436,11 +431,12 @@
     @media (max-width: 768px) {
       #screen-home {
         flex-direction: column;
-        gap: 40px;
+        gap: 30px;
       }
       .home-title {
         max-width: 100%;
         text-align: center;
+        margin-right: 0;
       }
       .home-title h1 {
         font-size: 2.5rem;
@@ -450,7 +446,8 @@
         align-items: center;
       }
       .shuttle-btn {
-        max-width: 300px;
+        max-width: 350px;
+        width: 100%;
       }
       .player-screen {
         padding: 20px;
@@ -467,6 +464,9 @@
       .player-photo img {
         height: auto;
         max-height: 300px;
+      }
+      .players-nav {
+        padding-left: 20px;
       }
     }
   </style>
@@ -789,15 +789,9 @@
 
       // Only activate scroll when the players section is visible
       const playersSection = document.getElementById('screen-players');
-      const observer = new MutationObserver(() => {
-        if (playersSection.classList.contains('active')) {
-          window.addEventListener('wheel', handleWheel, { passive: false });
-        } else {
-          window.removeEventListener('wheel', handleWheel);
-        }
-      });
-
+      
       function handleWheel(e) {
+        if (!playersSection.classList.contains('active')) return;
         e.preventDefault();
         if (scrollCooldown) return;
         if (e.deltaY > 0) {
@@ -809,12 +803,7 @@
         setTimeout(() => { scrollCooldown = false; }, 600);
       }
 
-      observer.observe(playersSection, { attributes: true, attributeFilter: ['class'] });
-
-      // Initial check
-      if (playersSection.classList.contains('active')) {
-        window.addEventListener('wheel', handleWheel, { passive: false });
-      }
+      window.addEventListener('wheel', handleWheel, { passive: false });
 
       Object.keys(navButtons).forEach((key) => {
         const button = navButtons[key];
